@@ -44,30 +44,28 @@ export function ItemsSection({ selectedItems, onToggleItem }: Props) {
         className="buscador"
       />
 
-      {search && (
-        <ul className="resultados-busqueda">
-          {cargando && <li className="resultado-vacio">Buscando...</li>}
-          {!cargando && resultados.length === 0 && (
-            <li className="resultado-vacio">Sin resultados</li>
-          )}
-          {!cargando &&
-            resultados.map((item) => (
-              <li key={item.id}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={seleccionadosIds.has(item.id)}
-                    onChange={() => onToggleItem(item)}
-                  />
-                  <span className="nombre">{item.nombre}</span>
-                  <span className="precio">
-                    Q{Number(item.precio).toFixed(2)}
-                  </span>
-                </label>
-              </li>
-            ))}
-        </ul>
-      )}
+      <ul className="resultados-busqueda">
+        {cargando && <li className="resultado-vacio">Buscando...</li>}
+        {!cargando && resultados.length === 0 && (
+          <li className="resultado-vacio">Sin resultados</li>
+        )}
+        {!cargando &&
+          resultados.map((item) => (
+            <li key={item.id}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={seleccionadosIds.has(item.id)}
+                  onChange={() => onToggleItem(item)}
+                />
+                <span className="nombre">{item.nombre}</span>
+                <span className="precio">
+                  Q{Number(item.precio).toFixed(2)}
+                </span>
+              </label>
+            </li>
+          ))}
+      </ul>
 
       <div className="seleccionados">
         <p className="seleccionados-titulo">
