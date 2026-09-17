@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiError } from "../../api/client";
 import { activarItem, buscarItemsAdmin, desactivarItem } from "../../api/items";
+import { SlideOver } from "../SlideOver/SlideOver";
 import type { Item } from "../../types";
 import { clearAdminToken, getAdminToken } from "../../utils/adminAuth";
 import { ItemForm } from "./ItemForm";
@@ -82,16 +83,23 @@ export function ItemsTab() {
         </button>
       </div>
 
-      {mostrarForm && (
-        <ItemForm
-          itemEditando={editando}
-          onGuardado={() => {
-            setMostrarForm(false);
-            setRecargar((n) => n + 1);
-          }}
-          onCancelar={() => setMostrarForm(false)}
-        />
-      )}
+      <SlideOver
+        open={mostrarForm}
+        title={editando ? "Editar item" : "Nuevo item"}
+        onClose={() => setMostrarForm(false)}
+      >
+        {mostrarForm && (
+          <ItemForm
+            key={editando?.id ?? "nuevo"}
+            itemEditando={editando}
+            onGuardado={() => {
+              setMostrarForm(false);
+              setRecargar((n) => n + 1);
+            }}
+            onCancelar={() => setMostrarForm(false)}
+          />
+        )}
+      </SlideOver>
 
       {error && <p className="admin-error">{error}</p>}
 
@@ -151,8 +159,8 @@ export function ItemsTab() {
                       title="Editar"
                     >
                       <svg
-                        width="15"
-                        height="15"
+                        width="20"
+                        height="20"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"

@@ -62,8 +62,6 @@ export function ItemForm({ itemEditando, onGuardado, onCancelar }: Props) {
 
   return (
     <form className="item-form" onSubmit={handleSubmit(onSubmit)}>
-      <h3>{itemEditando ? "Editar item" : "Nuevo item"}</h3>
-
       <label className="campo">
         <span>Tipo</span>
         <select {...register("tipo")} disabled={!!itemEditando}>
