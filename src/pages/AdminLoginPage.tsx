@@ -47,19 +47,19 @@ export function AdminLoginPage() {
   return (
     <div className="admin-login-page">
       <form className="admin-login-card" onSubmit={handleSubmit(onSubmit)}>
-        <h1>Disagro</h1>
+        <h1>Disagro Evento Promociones</h1>
         <p className="subtitulo">Panel administrativo</p>
 
         <label className="campo">
           <span>Usuario</span>
-          <input type="text" placeholder="admin" {...register("username")} />
+          <input type="text" placeholder="" {...register("username")} />
           {errors.username && (
             <span className="error">{errors.username.message}</span>
           )}
         </label>
 
         <label className="campo">
-          <span>Contrasena</span>
+          <span>Contraseña</span>
           <input type="password" {...register("password")} />
           {errors.password && (
             <span className="error">{errors.password.message}</span>
