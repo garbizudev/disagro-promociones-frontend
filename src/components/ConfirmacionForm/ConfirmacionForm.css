@@ -147,6 +147,27 @@
   flex: 1;
 }
 
+.etiqueta-tipo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.etiqueta-servicio {
+  background: #4c6fff;
+}
+
+.etiqueta-producto {
+  background: #2ecc71;
+}
+
 .resultado-vacio {
   padding: 0.6rem 0.75rem;
   color: #9aa0ab;

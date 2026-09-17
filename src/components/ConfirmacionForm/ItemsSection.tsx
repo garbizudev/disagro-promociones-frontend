@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
 import { buscarItems } from "../../api/items";
-import type { Item } from "../../types";
+import type { Item, TipoItem } from "../../types";
 import { calcularDescuentosPreview } from "../../utils/descuentos";
 
 interface Props {
   selectedItems: Item[];
   onToggleItem: (item: Item) => void;
+}
+
+function EtiquetaTipo({ tipo }: { tipo: TipoItem }) {
+  return (
+    <span
+      className={`etiqueta-tipo etiqueta-${tipo.toLowerCase()}`}
+      title={tipo === "SERVICIO" ? "Servicio" : "Producto"}
+    >
+      {tipo === "SERVICIO" ? "S" : "P"}
+    </span>
+  );
 }
 
 export function ItemsSection({ selectedItems, onToggleItem }: Props) {
@@ -58,6 +69,7 @@ export function ItemsSection({ selectedItems, onToggleItem }: Props) {
                   checked={seleccionadosIds.has(item.id)}
                   onChange={() => onToggleItem(item)}
                 />
+                <EtiquetaTipo tipo={item.tipo} />
                 <span className="nombre">{item.nombre}</span>
                 <span className="precio">
                   Q{Number(item.precio).toFixed(2)}
@@ -80,6 +92,7 @@ export function ItemsSection({ selectedItems, onToggleItem }: Props) {
           {selectedItems.map((item) => (
             <li key={item.id} className="seleccionado-fila">
               <span className="check">✓</span>
+              <EtiquetaTipo tipo={item.tipo} />
               <span className="nombre">{item.nombre}</span>
               <span className="precio">
                 Q{Number(item.precio).toFixed(2)}
