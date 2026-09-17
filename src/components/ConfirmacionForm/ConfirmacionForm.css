@@ -168,6 +168,19 @@
   background: #2ecc71;
 }
 
+.leyenda-tipos {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0;
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+.leyenda-tipos .etiqueta-tipo {
+  margin-right: 0.15rem;
+}
+
 .resultado-vacio {
   padding: 0.6rem 0.75rem;
   color: #9aa0ab;

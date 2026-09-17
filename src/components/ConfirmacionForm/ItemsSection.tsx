@@ -55,6 +55,11 @@ export function ItemsSection({ selectedItems, onToggleItem }: Props) {
         className="buscador"
       />
 
+      <p className="leyenda-tipos">
+        <EtiquetaTipo tipo="SERVICIO" /> Servicio &nbsp;&nbsp;
+        <EtiquetaTipo tipo="PRODUCTO" /> Producto
+      </p>
+
       <ul className="resultados-busqueda">
         {cargando && <li className="resultado-vacio">Buscando...</li>}
         {!cargando && resultados.length === 0 && (
