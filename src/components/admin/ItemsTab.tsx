@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { ApiError } from "../../api/client";
 import { activarItem, buscarItemsAdmin, desactivarItem } from "../../api/items";
 import { SlideOver } from "../SlideOver/SlideOver";
+import { Toast } from "../Toast/Toast";
+import { useToast } from "../../hooks/useToast";
 import type { Item } from "../../types";
 import { clearAdminToken, getAdminToken } from "../../utils/adminAuth";
 import { ItemForm } from "./ItemForm";
@@ -16,6 +18,7 @@ export function ItemsTab() {
   const [editando, setEditando] = useState<Item | null>(null);
   const [mostrarForm, setMostrarForm] = useState(false);
   const [recargar, setRecargar] = useState(0);
+  const { mensaje, mostrarToast } = useToast();
 
   useEffect(() => {
     const token = getAdminToken();
@@ -51,8 +54,10 @@ export function ItemsTab() {
     }
     if (item.activo) {
       await desactivarItem(token, item.id);
+      mostrarToast("Item desactivado");
     } else {
       await activarItem(token, item.id);
+      mostrarToast("Item activado");
     }
     setRecargar((n) => n + 1);
   }
@@ -95,6 +100,7 @@ export function ItemsTab() {
             onGuardado={() => {
               setMostrarForm(false);
               setRecargar((n) => n + 1);
+              mostrarToast(editando ? "Item actualizado" : "Item creado");
             }}
             onCancelar={() => setMostrarForm(false)}
           />
@@ -178,6 +184,8 @@ export function ItemsTab() {
           </tbody>
         </table>
       </div>
+
+      <Toast mensaje={mensaje} />
     </div>
   );
 }
