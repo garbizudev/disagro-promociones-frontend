@@ -276,6 +276,10 @@
   font-size: 0.78rem;
 }
 
+.requerido {
+  color: #e0403f;
+}
+
 .item-form .error-general {
   color: #e0403f;
   font-size: 0.85rem;
@@ -300,6 +304,11 @@
   background: #4c6fff;
   color: #ffffff;
   font-weight: 600;
+}
+
+.item-form-acciones button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .item-form-acciones button[type="button"] {

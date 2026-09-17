@@ -17,9 +17,10 @@ export function ItemForm({ itemEditando, onGuardado, onCancelar }: Props) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<ItemFormValues>({
     resolver: zodResolver(itemSchema),
+    mode: "onChange",
     defaultValues: itemEditando
       ? {
           tipo: itemEditando.tipo,
@@ -71,7 +72,9 @@ export function ItemForm({ itemEditando, onGuardado, onCancelar }: Props) {
       </label>
 
       <label className="campo">
-        <span>Nombre</span>
+        <span>
+          Nombre <span className="requerido">*</span>
+        </span>
         <input type="text" {...register("nombre")} />
         {errors.nombre && (
           <span className="error">{errors.nombre.message}</span>
@@ -84,7 +87,9 @@ export function ItemForm({ itemEditando, onGuardado, onCancelar }: Props) {
       </label>
 
       <label className="campo">
-        <span>Precio</span>
+        <span>
+          Precio <span className="requerido">*</span>
+        </span>
         <input type="number" step="0.01" {...register("precio")} />
         {errors.precio && (
           <span className="error">{errors.precio.message}</span>
@@ -97,7 +102,7 @@ export function ItemForm({ itemEditando, onGuardado, onCancelar }: Props) {
         <button type="button" onClick={onCancelar} disabled={enviando}>
           Cancelar
         </button>
-        <button type="submit" disabled={enviando}>
+        <button type="submit" disabled={enviando || !isValid}>
           {enviando ? "Guardando..." : "Guardar"}
         </button>
       </div>
