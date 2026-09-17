@@ -1,0 +1,40 @@
+export type TipoItem = "SERVICIO" | "PRODUCTO";
+
+export interface Item {
+  id: number;
+  tipo: TipoItem;
+  nombre: string;
+  descripcion: string | null;
+  precio: string;
+  activo: boolean;
+}
+
+export interface Cliente {
+  id: number;
+  nombre: string;
+  apellidos: string;
+  email: string;
+  numeroDocumento: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ConfirmacionItem {
+  id: number;
+  confirmacionId: number;
+  itemId: number;
+  precioAlMomento: string;
+  item: Item;
+}
+
+export interface Confirmacion {
+  id: number;
+  clienteId: number;
+  fechaHoraEvento: string;
+  descuentoServicios: number;
+  descuentoProductos: number;
+  createdAt: string;
+  items: ConfirmacionItem[];
+  cliente: Cliente;
+  accessToken: string;
+}
