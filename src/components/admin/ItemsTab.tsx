@@ -103,8 +103,8 @@ export function ItemsTab() {
               <th>Nombre</th>
               <th>Descripcion</th>
               <th>Precio</th>
-              <th>Estado</th>
-              <th>Acciones</th>
+              <th>Activo</th>
+              <th>Editar</th>
             </tr>
           </thead>
           <tbody>
@@ -130,20 +130,39 @@ export function ItemsTab() {
                   <td>{item.descripcion ?? "-"}</td>
                   <td>Q{Number(item.precio).toFixed(2)}</td>
                   <td>
-                    <span
-                      className={
-                        item.activo ? "estado-activo" : "estado-inactivo"
-                      }
+                    <label
+                      className="toggle-switch"
+                      title={item.activo ? "Desactivar" : "Activar"}
                     >
-                      {item.activo ? "Activo" : "Inactivo"}
-                    </span>
+                      <input
+                        type="checkbox"
+                        checked={item.activo}
+                        onChange={() => toggleActivo(item)}
+                      />
+                      <span className="toggle-slider" />
+                    </label>
                   </td>
                   <td className="admin-acciones">
-                    <button type="button" onClick={() => abrirEditar(item)}>
-                      Editar
-                    </button>
-                    <button type="button" onClick={() => toggleActivo(item)}>
-                      {item.activo ? "Desactivar" : "Activar"}
+                    <button
+                      type="button"
+                      className="boton-icono"
+                      onClick={() => abrirEditar(item)}
+                      aria-label="Editar"
+                      title="Editar"
+                    >
+                      <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M12 20h9" />
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                      </svg>
                     </button>
                   </td>
                 </tr>
