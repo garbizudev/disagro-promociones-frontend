@@ -16,9 +16,10 @@ export function ConfirmacionForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<ConfirmacionFormValues>({
     resolver: zodResolver(confirmacionSchema),
+    mode: "onChange",
   });
 
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
@@ -35,11 +36,6 @@ export function ConfirmacionForm() {
   }
 
   async function onSubmit(valores: ConfirmacionFormValues) {
-    if (selectedItems.length === 0) {
-      setErrorGeneral("Selecciona al menos un servicio o producto");
-      return;
-    }
-
     setEnviando(true);
     setErrorGeneral(null);
 
@@ -61,7 +57,7 @@ export function ConfirmacionForm() {
       if (error instanceof ApiError) {
         setErrorGeneral(error.message);
       } else {
-        setErrorGeneral("Ocurrio un error inesperado, intenta de nuevo");
+        setErrorGeneral("Ocurrió un error inesperado, intenta de nuevo");
       }
     } finally {
       setEnviando(false);
@@ -111,12 +107,16 @@ export function ConfirmacionForm() {
 
         {errorGeneral && <p className="error-general">{errorGeneral}</p>}
 
-        <button type="submit" className="boton-confirmar" disabled={enviando}>
+        <button
+          type="submit"
+          className="boton-confirmar"
+          disabled={enviando || !isValid || selectedItems.length === 0}
+        >
           {enviando ? "Enviando..." : "CONFIRMAR ASISTENCIA →"}
         </button>
       </form>
 
-      <footer className="disagro-footer">Atencion al cliente: 2223-2425</footer>
+      <footer className="disagro-footer">Atención al cliente: 2223-2425</footer>
     </div>
   );
 }

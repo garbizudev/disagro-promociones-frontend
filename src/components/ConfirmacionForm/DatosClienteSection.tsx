@@ -10,11 +10,13 @@ export function DatosClienteSection({ register, errors }: Props) {
   return (
     <section className="seccion seccion-datos">
       <h2>
-        <span className="paso-numero">1</span> Ingrese su informacion
+        <span className="paso-numero">1</span> Ingrese su información
       </h2>
 
       <label className="campo">
-        <span>Nombre</span>
+        <span>
+          Nombre <span className="requerido">*</span>
+        </span>
         <input
           type="text"
           placeholder="Introduzca su nombre"
@@ -26,7 +28,9 @@ export function DatosClienteSection({ register, errors }: Props) {
       </label>
 
       <label className="campo">
-        <span>Apellidos</span>
+        <span>
+          Apellidos <span className="requerido">*</span>
+        </span>
         <input
           type="text"
           placeholder="Introduzca sus apellidos"
@@ -38,7 +42,9 @@ export function DatosClienteSection({ register, errors }: Props) {
       </label>
 
       <label className="campo">
-        <span>Email</span>
+        <span>
+          Email <span className="requerido">*</span>
+        </span>
         <input
           type="email"
           placeholder="Introduzca su email"
@@ -48,7 +54,9 @@ export function DatosClienteSection({ register, errors }: Props) {
       </label>
 
       <label className="campo">
-        <span>Numero de documento</span>
+        <span>
+          Número de documento <span className="requerido">*</span>
+        </span>
         <input
           type="text"
           placeholder="Introduzca su DPI o documento"
@@ -60,7 +68,9 @@ export function DatosClienteSection({ register, errors }: Props) {
       </label>
 
       <label className="campo">
-        <span>Fecha y Hora</span>
+        <span>
+          Fecha y Hora <span className="requerido">*</span>
+        </span>
         <input type="datetime-local" {...register("fechaHoraEvento")} />
         {errors.fechaHoraEvento && (
           <span className="error">{errors.fechaHoraEvento.message}</span>

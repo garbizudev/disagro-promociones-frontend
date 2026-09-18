@@ -44,7 +44,7 @@ export function ItemsSection({ selectedItems, onToggleItem }: Props) {
     <section className="seccion seccion-items">
       <h2>
         <span className="paso-numero">2</span> Seleccione Servicios y
-        Productos de su interes
+        Productos de su interés
       </h2>
 
       <input
@@ -90,7 +90,10 @@ export function ItemsSection({ selectedItems, onToggleItem }: Props) {
         </p>
 
         {selectedItems.length === 0 && (
-          <p className="seleccionados-vacio">Aun no has seleccionado nada</p>
+          <p className="seleccionados-vacio">
+            Selecciona al menos un servicio o producto para poder confirmar{" "}
+            <span className="requerido">*</span>
+          </p>
         )}
 
         <ul>

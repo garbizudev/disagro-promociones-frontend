@@ -97,6 +97,10 @@
   border-color: #4c6fff;
 }
 
+.requerido {
+  color: #e0403f;
+}
+
 .error {
   color: #e0403f;
   font-size: 0.78rem;
