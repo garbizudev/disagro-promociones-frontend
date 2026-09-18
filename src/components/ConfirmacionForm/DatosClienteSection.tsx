@@ -1,12 +1,14 @@
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 import type { ConfirmacionFormValues } from "../../schemas/confirmacion.schema";
+import type { Evento } from "../../types";
 
 interface Props {
   register: UseFormRegister<ConfirmacionFormValues>;
   errors: FieldErrors<ConfirmacionFormValues>;
+  eventos: Evento[];
 }
 
-export function DatosClienteSection({ register, errors }: Props) {
+export function DatosClienteSection({ register, errors, eventos }: Props) {
   return (
     <section className="seccion seccion-datos">
       <h2>
@@ -71,9 +73,21 @@ export function DatosClienteSection({ register, errors }: Props) {
         <span>
           Fecha y Hora <span className="requerido">*</span>
         </span>
-        <input type="datetime-local" {...register("fechaHoraEvento")} />
-        {errors.fechaHoraEvento && (
-          <span className="error">{errors.fechaHoraEvento.message}</span>
+        <select {...register("eventoId")} defaultValue="">
+          <option value="" disabled>
+            Seleccione fecha y hora en que asistirá
+          </option>
+          {eventos.map((evento) => (
+            <option key={evento.id} value={evento.id}>
+              {new Date(evento.fechaHora).toLocaleString("es-GT", {
+                dateStyle: "long",
+                timeStyle: "short",
+              })}
+            </option>
+          ))}
+        </select>
+        {errors.eventoId && (
+          <span className="error">{errors.eventoId.message}</span>
         )}
       </label>
     </section>

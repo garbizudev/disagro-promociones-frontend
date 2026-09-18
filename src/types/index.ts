@@ -27,15 +27,23 @@ export interface ConfirmacionItem {
   item: Item;
 }
 
+export interface Evento {
+  id: number;
+  fechaHora: string;
+  activo: boolean;
+  createdAt: string;
+}
+
 export interface Confirmacion {
   id: number;
   clienteId: number;
-  fechaHoraEvento: string;
+  eventoId: number;
   descuentoServicios: number;
   descuentoProductos: number;
   createdAt: string;
   items: ConfirmacionItem[];
   cliente: Cliente;
+  evento: Evento;
   accessToken: string;
 }
 

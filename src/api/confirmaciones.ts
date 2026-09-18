@@ -8,7 +8,7 @@ export interface CrearConfirmacionPayload {
     email: string;
     numeroDocumento: string;
   };
-  fechaHoraEvento: string;
+  eventoId: number;
   itemIds: number[];
 }
 

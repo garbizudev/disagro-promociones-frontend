@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ConfirmacionesTab } from "../components/admin/ConfirmacionesTab";
+import { EventosTab } from "../components/admin/EventosTab";
 import { ItemsTab } from "../components/admin/ItemsTab";
 import { clearAdminToken } from "../utils/adminAuth";
 import "./AdminDashboardPage.css";
 
-type Tab = "confirmaciones" | "items";
+type Tab = "confirmaciones" | "items" | "eventos";
 
 export function AdminDashboardPage() {
   const navigate = useNavigate();
@@ -43,10 +44,19 @@ export function AdminDashboardPage() {
         >
           Productos y Servicios
         </button>
+        <button
+          type="button"
+          className={tab === "eventos" ? "activo" : ""}
+          onClick={() => setTab("eventos")}
+        >
+          Eventos
+        </button>
       </nav>
 
       <main className="admin-contenido">
-        {tab === "confirmaciones" ? <ConfirmacionesTab /> : <ItemsTab />}
+        {tab === "confirmaciones" && <ConfirmacionesTab />}
+        {tab === "items" && <ItemsTab />}
+        {tab === "eventos" && <EventosTab />}
       </main>
     </div>
   );

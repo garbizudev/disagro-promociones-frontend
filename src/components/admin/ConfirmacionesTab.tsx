@@ -117,7 +117,7 @@ export function ConfirmacionesTab() {
                   <td>{confirmacion.cliente.email}</td>
                   <td>{confirmacion.cliente.numeroDocumento}</td>
                   <td>
-                    {new Date(confirmacion.fechaHoraEvento).toLocaleString(
+                    {new Date(confirmacion.evento.fechaHora).toLocaleString(
                       "es-GT",
                     )}
                   </td>

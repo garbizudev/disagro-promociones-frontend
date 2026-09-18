@@ -1,13 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ApiError } from "../../api/client";
 import { crearConfirmacion } from "../../api/confirmaciones";
+import { buscarEventosDisponibles } from "../../api/eventos";
 import {
   confirmacionSchema,
   type ConfirmacionFormValues,
 } from "../../schemas/confirmacion.schema";
-import type { Confirmacion, Item } from "../../types";
+import type { Confirmacion, Evento, Item } from "../../types";
 import { DatosClienteSection } from "./DatosClienteSection";
 import { ItemsSection } from "./ItemsSection";
 import "./ConfirmacionForm.css";
@@ -23,9 +24,16 @@ export function ConfirmacionForm() {
   });
 
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
+  const [eventos, setEventos] = useState<Evento[]>([]);
   const [enviando, setEnviando] = useState(false);
   const [errorGeneral, setErrorGeneral] = useState<string | null>(null);
   const [resultado, setResultado] = useState<Confirmacion | null>(null);
+
+  useEffect(() => {
+    buscarEventosDisponibles()
+      .then(setEventos)
+      .catch(() => setEventos([]));
+  }, []);
 
   function toggleItem(item: Item) {
     setSelectedItems((actuales) =>
@@ -47,7 +55,7 @@ export function ConfirmacionForm() {
           email: valores.email,
           numeroDocumento: valores.numeroDocumento,
         },
-        fechaHoraEvento: new Date(valores.fechaHoraEvento).toISOString(),
+        eventoId: valores.eventoId,
         itemIds: selectedItems.map((item) => item.id),
       });
 
@@ -75,6 +83,13 @@ export function ConfirmacionForm() {
         </header>
         <div className="confirmacion-exito">
           <h2>Gracias por confirmar tu asistencia, {resultado.cliente.nombre}</h2>
+          <p>
+            Te esperamos el{" "}
+            {new Date(resultado.evento.fechaHora).toLocaleString("es-GT", {
+              dateStyle: "long",
+              timeStyle: "short",
+            })}
+          </p>
           <div className="descuentos">
             <div className="descuento-caja">
               <p>Descuento obtenido en Servicios</p>
@@ -101,7 +116,11 @@ export function ConfirmacionForm() {
 
       <form className="disagro-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="disagro-grid">
-          <DatosClienteSection register={register} errors={errors} />
+          <DatosClienteSection
+            register={register}
+            errors={errors}
+            eventos={eventos}
+          />
           <ItemsSection selectedItems={selectedItems} onToggleItem={toggleItem} />
         </div>
 
