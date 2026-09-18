@@ -1,5 +1,5 @@
 import { apiFetch, apiFetchAuth } from "./client";
-import type { Confirmacion } from "../types";
+import type { Confirmacion, PaginatedResult } from "../types";
 
 export interface CrearConfirmacionPayload {
   cliente: {
@@ -22,6 +22,8 @@ export function crearConfirmacion(payload: CrearConfirmacionPayload) {
 export interface BuscarConfirmacionesParams {
   search?: string;
   fecha?: string;
+  page?: number;
+  pageSize?: number;
 }
 
 export function buscarConfirmaciones(
@@ -35,7 +37,13 @@ export function buscarConfirmaciones(
   if (params.fecha) {
     query.set("fecha", params.fecha);
   }
-  return apiFetchAuth<Confirmacion[]>(
+  if (params.page) {
+    query.set("page", String(params.page));
+  }
+  if (params.pageSize) {
+    query.set("pageSize", String(params.pageSize));
+  }
+  return apiFetchAuth<PaginatedResult<Confirmacion>>(
     `/confirmaciones?${query.toString()}`,
     token,
   );

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiError } from "../../api/client";
 import { activarItem, buscarItemsAdmin, desactivarItem } from "../../api/items";
+import { Pagination } from "../Pagination/Pagination";
 import { SlideOver } from "../SlideOver/SlideOver";
 import { Toast } from "../Toast/Toast";
 import { useToast } from "../../hooks/useToast";
@@ -9,10 +10,15 @@ import type { Item } from "../../types";
 import { clearAdminToken, getAdminToken } from "../../utils/adminAuth";
 import { ItemForm } from "./ItemForm";
 
+const PAGE_SIZE = 10;
+
 export function ItemsTab() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  const [searchDebounced, setSearchDebounced] = useState("");
+  const [page, setPage] = useState(1);
   const [items, setItems] = useState<Item[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editando, setEditando] = useState<Item | null>(null);
@@ -21,31 +27,43 @@ export function ItemsTab() {
   const { mensaje, mostrarToast } = useToast();
 
   useEffect(() => {
+    const timeout = setTimeout(() => setSearchDebounced(search), 300);
+    return () => clearTimeout(timeout);
+  }, [search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchDebounced]);
+
+  useEffect(() => {
     const token = getAdminToken();
     if (!token) {
       navigate("/admin/login");
       return;
     }
 
-    const timeout = setTimeout(() => {
-      setCargando(true);
-      setError(null);
-      buscarItemsAdmin(token, { search })
-        .then(setItems)
-        .catch((err) => {
-          if (err instanceof ApiError && err.status === 401) {
-            clearAdminToken();
-            navigate("/admin/login");
-            return;
-          }
-          setError("No se pudieron cargar los items");
-        })
-        .finally(() => setCargando(false));
-    }, 300);
-
-    return () => clearTimeout(timeout);
+    setCargando(true);
+    setError(null);
+    buscarItemsAdmin(token, {
+      search: searchDebounced,
+      page,
+      pageSize: PAGE_SIZE,
+    })
+      .then((resultado) => {
+        setItems(resultado.data);
+        setTotalPages(resultado.totalPages);
+      })
+      .catch((err) => {
+        if (err instanceof ApiError && err.status === 401) {
+          clearAdminToken();
+          navigate("/admin/login");
+          return;
+        }
+        setError("No se pudieron cargar los items");
+      })
+      .finally(() => setCargando(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, recargar]);
+  }, [searchDebounced, page, recargar]);
 
   async function toggleActivo(item: Item) {
     const token = getAdminToken();
@@ -184,6 +202,8 @@ export function ItemsTab() {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} />
 
       <Toast mensaje={mensaje} />
     </div>

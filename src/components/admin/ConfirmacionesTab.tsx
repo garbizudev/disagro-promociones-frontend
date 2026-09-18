@@ -4,14 +4,29 @@ import { ApiError } from "../../api/client";
 import { buscarConfirmaciones } from "../../api/confirmaciones";
 import type { Confirmacion } from "../../types";
 import { clearAdminToken, getAdminToken } from "../../utils/adminAuth";
+import { Pagination } from "../Pagination/Pagination";
+
+const PAGE_SIZE = 10;
 
 export function ConfirmacionesTab() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  const [searchDebounced, setSearchDebounced] = useState("");
   const [fecha, setFecha] = useState("");
+  const [page, setPage] = useState(1);
   const [confirmaciones, setConfirmaciones] = useState<Confirmacion[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setSearchDebounced(search), 300);
+    return () => clearTimeout(timeout);
+  }, [search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchDebounced, fecha]);
 
   useEffect(() => {
     const token = getAdminToken();
@@ -20,25 +35,29 @@ export function ConfirmacionesTab() {
       return;
     }
 
-    const timeout = setTimeout(() => {
-      setCargando(true);
-      setError(null);
-      buscarConfirmaciones(token, { search, fecha })
-        .then(setConfirmaciones)
-        .catch((err) => {
-          if (err instanceof ApiError && err.status === 401) {
-            clearAdminToken();
-            navigate("/admin/login");
-            return;
-          }
-          setError("No se pudieron cargar las confirmaciones");
-        })
-        .finally(() => setCargando(false));
-    }, 300);
-
-    return () => clearTimeout(timeout);
+    setCargando(true);
+    setError(null);
+    buscarConfirmaciones(token, {
+      search: searchDebounced,
+      fecha,
+      page,
+      pageSize: PAGE_SIZE,
+    })
+      .then((resultado) => {
+        setConfirmaciones(resultado.data);
+        setTotalPages(resultado.totalPages);
+      })
+      .catch((err) => {
+        if (err instanceof ApiError && err.status === 401) {
+          clearAdminToken();
+          navigate("/admin/login");
+          return;
+        }
+        setError("No se pudieron cargar las confirmaciones");
+      })
+      .finally(() => setCargando(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, fecha]);
+  }, [searchDebounced, fecha, page]);
 
   return (
     <div>
@@ -114,6 +133,8 @@ export function ConfirmacionesTab() {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={page} totalPages={totalPages} onChange={setPage} />
     </div>
   );
 }

@@ -38,3 +38,11 @@ export interface Confirmacion {
   cliente: Cliente;
   accessToken: string;
 }
+
+export interface PaginatedResult<T> {
+  data: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}

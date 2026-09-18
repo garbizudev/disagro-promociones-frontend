@@ -1,5 +1,5 @@
 import { apiFetch, apiFetchAuth } from "./client";
-import type { Item, TipoItem } from "../types";
+import type { Item, PaginatedResult, TipoItem } from "../types";
 
 export function buscarItems(search: string) {
   const params = new URLSearchParams();
@@ -12,6 +12,8 @@ export function buscarItems(search: string) {
 export interface BuscarItemsAdminParams {
   search?: string;
   tipo?: TipoItem;
+  page?: number;
+  pageSize?: number;
 }
 
 export function buscarItemsAdmin(
@@ -25,7 +27,16 @@ export function buscarItemsAdmin(
   if (params.tipo) {
     query.set("tipo", params.tipo);
   }
-  return apiFetchAuth<Item[]>(`/items/admin?${query.toString()}`, token);
+  if (params.page) {
+    query.set("page", String(params.page));
+  }
+  if (params.pageSize) {
+    query.set("pageSize", String(params.pageSize));
+  }
+  return apiFetchAuth<PaginatedResult<Item>>(
+    `/items/admin?${query.toString()}`,
+    token,
+  );
 }
 
 export interface CrearItemPayload {
