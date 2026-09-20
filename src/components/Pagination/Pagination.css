@@ -1,0 +1,30 @@
+.paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem 0 0.25rem;
+}
+
+.paginacion button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #d7dae0;
+  background: #ffffff;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.paginacion button:hover:not(:disabled) {
+  background: #f4f5f7;
+}
+
+.paginacion button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paginacion-info {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
