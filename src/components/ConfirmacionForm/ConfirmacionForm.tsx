@@ -55,7 +55,7 @@ export function ConfirmacionForm() {
           email: valores.email,
           numeroDocumento: valores.numeroDocumento,
         },
-        eventoId: valores.eventoId,
+        eventoId: Number(valores.eventoId),
         itemIds: selectedItems.map((item) => item.id),
       });
 

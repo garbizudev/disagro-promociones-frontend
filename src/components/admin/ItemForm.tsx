@@ -26,7 +26,7 @@ export function ItemForm({ itemEditando, onGuardado, onCancelar }: Props) {
           tipo: itemEditando.tipo,
           nombre: itemEditando.nombre,
           descripcion: itemEditando.descripcion ?? "",
-          precio: Number(itemEditando.precio),
+          precio: String(itemEditando.precio),
         }
       : { tipo: "PRODUCTO" },
   });
@@ -48,10 +48,13 @@ export function ItemForm({ itemEditando, onGuardado, onCancelar }: Props) {
         await actualizarItem(token, itemEditando.id, {
           nombre: valores.nombre,
           descripcion: valores.descripcion,
-          precio: valores.precio,
+          precio: Number(valores.precio),
         });
       } else {
-        await crearItem(token, valores);
+        await crearItem(token, {
+          ...valores,
+          precio: Number(valores.precio),
+        });
       }
       onGuardado();
     } catch (err) {
